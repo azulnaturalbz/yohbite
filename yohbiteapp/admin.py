@@ -1,6 +1,8 @@
 from django.contrib import admin
-from yohbiteapp.models import Restaurant
+from yohbiteapp.models import Restaurant, Customer, Driver
 # Register your models here.
 
 
 admin.site.register(Restaurant)
+admin.site.register(Customer)
+admin.site.register(Driver)

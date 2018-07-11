@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
 from django.conf.urls import url
 from yohbiteapp import views
 from django.contrib.auth import views as auth_views
@@ -32,6 +33,10 @@ urlpatterns = [
     url(r'^restaurant/sign-out/$', auth_views.logout,
         {'next_page': '/'},
         name='restaurant-sign-out'),
-    url(r'^restaurant/$', views.restaurant_home, name='restaurant-home')
+    url(r'^restaurant/$', views.restaurant_home, name='restaurant-home'),
 
+    # sign in and sign up and sign out
+    url(r'^api/social/', include('rest_framework_social_oauth2.urls')),
+    # /convert-token(sign in/sign up
+    # /revoke-toke(sign out)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

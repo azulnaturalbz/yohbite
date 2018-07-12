@@ -14,19 +14,24 @@
     {% block head %}
     {% endblock %}
 </head>
-<body>
-<div class="container-fluid">
+<body class="bg-blue">
+
+<div class="container">
     <div class="row">
-        <div class="col-2 col-md-2 col-sm-2 sidebar">
-            {% block sidebar %}{% endblock %}
-        </div>
-        <div class="col-10 col-md-10 col-sm-10 content">
-            {% block page %}{% endblock %}
+        <div class="col col-offset">
+            <br/>
+            <br/>
+            <br/>
+            <div class="card card-body">
+                <div class="card-body">
+                    <h3 class="text-center text-uppercase"><b>{% block heading %}{% endblock %}</b></h3>
+                    <br/>
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
-
 
 </body>
 
@@ -38,7 +43,7 @@
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
 <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 {% block scripts %}
 {% endblock %}

@@ -35,8 +35,14 @@ urlpatterns = [
         name='restaurant-sign-out'),
     url(r'^restaurant/$', views.restaurant_home, name='restaurant-home'),
 
+    url(r'^restaurant/account/$', views.restaurant_account, name='restaurant-account'),
+    url(r'^restaurant/meal/$', views.restaurant_meal, name='restaurant-meal'),
+    url(r'^restaurant/order/$', views.restaurant_order, name='restaurant-order'),
+    url(r'^restaurant/report/$', views.restaurant_report, name='restaurant-report'),
+
     # sign in and sign up and sign out
     url(r'^api/social/', include('rest_framework_social_oauth2.urls')),
     # /convert-token(sign in/sign up
     # /revoke-toke(sign out)
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

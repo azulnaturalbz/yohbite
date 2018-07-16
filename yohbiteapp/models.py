@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+
+
 # Create your models here.
 
 class Restaurant(models.Model):
@@ -8,7 +10,7 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=500)
     phone = models.CharField(max_length=500)
     address = models.CharField(max_length=500)
-    logo = models.ImageField(upload_to='restaurant_logo', blank=False )
+    logo = models.ImageField(upload_to='restaurant_logo', blank=False)
 
     def __str__(self):
         return self.name
@@ -44,6 +46,7 @@ class Meal(models.Model):
     def __str__(self):
         return self.name
 
+
 class Order(models.Model):
     COOKING = 1
     READY = 2
@@ -51,7 +54,7 @@ class Order(models.Model):
     DELIVERED = 4
 
     STATUS_CHOICES = (
-        (COOKING,"Cooking"),
+        (COOKING, "Cooking"),
         (READY, "Ready"),
         (ONTHEWAY, "On the way"),
         (DELIVERED, "Delivered"),
@@ -59,13 +62,13 @@ class Order(models.Model):
     )
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    restaurant = models.ForeignKey(Restaurant,on_delete=models.CASCADE)
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, blank=True, null=True)
     address = models.CharField(max_length=500)
     total = models.IntegerField()
     status = models.IntegerField(choices=STATUS_CHOICES)
     create_at = models.DateTimeField(default=timezone.now)
-    picked_at = models.DateTimeField(blank=True,null=True)
+    picked_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return str(self.id)
@@ -79,7 +82,3 @@ class OrderDetails(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-
-
-

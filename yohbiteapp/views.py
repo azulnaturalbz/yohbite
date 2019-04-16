@@ -4,11 +4,30 @@ from yohbiteapp.forms import UserForm, RestaurantForm, UserFormEdit, MealForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db.models import Sum, Case, Count, When
-from yohbiteapp.models import Meal, Order, Driver
+from yohbiteapp.models import Meal, Order, Driver, Location, District, Restaurant
 
 
 # Create your views here.
+def load_district(request, did=None):
+    if did is not None:
+        selected_district = did
+        districts = District.objects.all()
+        return render(request, 'restaurant/district_dropdown_list_options.html', {'districts': districts, 'selected_district': selected_district})
+    else:
+        districts = District.objects.all()
+        return render(request, 'restaurant/district_dropdown_list_options.html', {'districts': districts})
 
+
+def load_locations(request, did=None, lid=None):
+    if did is None and lid is None:
+        district_id = request.GET.get('district')
+        locations = Location.objects.filter(local__district__id=district_id).order_by('local')
+        return render(request, 'restaurant/location_dropdown_list_options.html', {'locations': locations})
+
+    else:
+        district_id = request.GET.get('district')
+        locations = Location.objects.filter(local__district__id=district_id).order_by('local')
+        return render(request, 'restaurant/location_dropdown_list_options.html', {'locations': locations})
 
 def home(request):
     return redirect(restaurant_home)
@@ -24,6 +43,9 @@ def restaurant_home(request):
 def restaurant_account(request):
     user_form = UserFormEdit(instance=request.user)
     restaurant_form = RestaurantForm(instance=request.user.restaurant)
+    restaurant = Restaurant.objects.get(id=request.user.restaurant.id)
+    districts = District.objects.all()
+    locations = Location.objects.filter(local__district_id=restaurant.district_id)
 
     if request.method == "POST":
         user_form = UserFormEdit(request.POST, instance=request.user.restaurant)
@@ -31,10 +53,14 @@ def restaurant_account(request):
         if user_form.is_valid() and restaurant_form.is_valid():
             user_form.save()
             restaurant_form.save()
+            # return redirect('restaurant-account')
 
     return render(request, 'restaurant/account.html', {
         "user_form": user_form,
-        "restaurant_form": restaurant_form
+        "restaurant_form": restaurant_form,
+        "restaurant":restaurant,
+        "districts":districts,
+        "locations":locations
     })
 
 

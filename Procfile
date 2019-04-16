@@ -1,1 +1,0 @@
-web: gunicorn yohbite.wgsi --log-file -

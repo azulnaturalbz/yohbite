@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = credentials.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = [credentials.ALLOWED_HOST,credentials.ALLOWED_HOST1,credentials.ALLOWED_HOST2,credentials.ALLOWED_HOST3]
@@ -82,22 +82,18 @@ WSGI_APPLICATION = 'yohbite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': credentials.DBNAME,
+        'USER': credentials.DBUSER,
+        'PASSWORD': credentials.DBPASSWORD,
+        'HOST': credentials.DBHOME,
+        'PORT': credentials.DBPORT,
+        'OPTIONS': {'sslmode': 'require'},
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': credentials.dbname,
-#         'USER': credentials.dbuser,
-#         'PASSWORD': credentials.dbpassword,
-#         'HOST': credentials.dbhome,
-#         'PORT': credentials.dbport,
-#     }
-# }
 
 
 # Password validation
@@ -196,3 +192,5 @@ SOCIAL_AUTH_PIPELINE = (
 
 
 STRIPE_API_KEY = credentials.STRIPE_API_KEY
+
+LOGOUT_REDIRECT_URL = '/'

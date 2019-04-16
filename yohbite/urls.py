@@ -25,13 +25,11 @@ from django.conf import settings
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   url(r'^$', views.home, name='home'),
-                  url(r'^restaurant/sign-in/$', auth_views.login,
-                      {'template_name': 'restaurant/sign_in.html'},
+                  url(r'^restaurant/sign-in/$', auth_views.LoginView.as_view(template_name='restaurant/sign_in.html'),
                       name='restaurant-sign-in'),
                   url(r'^restaurant/sign-up/$', views.restaurant_sign_up,
                       name='restaurant-sign-up'),
-                  url(r'^restaurant/sign-out/$', auth_views.logout,
-                      {'next_page': '/'},
+                  url(r'^restaurant/sign-out/$', auth_views.LogoutView.as_view(),
                       name='restaurant-sign-out'),
                   url(r'^restaurant/$', views.restaurant_home, name='restaurant-home'),
 
@@ -64,5 +62,11 @@ urlpatterns = [
                   url(r'^api/driver/order/complete/$', api.driver_complete_order),
                   url(r'^api/driver/revenue/$', api.driver_get_revenue),
                   url(r'^api/driver/location/update/', api.driver_update_location),
+
+                  # AJAX Rendering
+                  path('ajax/load-district/', views.load_district, name="ajax_load_district"),
+                  path('ajax/load-district/<int:did>/', views.load_district, name="ajax_load_district"),
+                  path('ajax/load-location/', views.load_locations, name="ajax_load_locations"),
+                  path('ajax/load-location/<int:did>/<int:lid>/', views.load_locations, name="ajax_load_locations"),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,16 +1,94 @@
+import os
+from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
 
 # Create your models here.
+def restuarant_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    # get filename
+    if instance.pk:
+        filename = '{}.{}'.format(instance.pk, ext)
+    else:
+        # set filename as random string
+        filename = '{}.{}'.format(uuid4().hex, ext)
+
+    return '/'.join(['restuarants', str(instance.id),'restuarant_logos', filename])
+
+
+def meals_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    # get filename
+    if instance.pk:
+        filename = '{}.{}'.format(instance.pk, ext)
+    else:
+        # set filename as random string
+        filename = '{}.{}'.format(uuid4().hex, ext)
+
+    return '/'.join(['restuarants', str(instance.restaurant.id),'restuarant_meals', filename])
+
+
+class Country(models.Model):
+    country = models.CharField(max_length=20)
+
+    def __str__(self):
+        return "%s " % (self.country)
+
+
+class District(models.Model):
+    district = models.CharField(max_length=100)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    description = models.TextField(default='No Description')
+
+    def __str__(self):
+        return "%s " % (self.district)
+
+
+class Local(models.Model):
+    local = models.CharField(max_length=100)
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
+    description = models.TextField(default='No Description')
+
+    def __str__(self):
+        return "%s " % (self.local)
+
+
+class LocalType(models.Model):
+    local = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "%s " % (self.local)
+
+
+class Location(models.Model):
+    local = models.ForeignKey(Local, on_delete=models.CASCADE)
+    localType = models.ForeignKey(LocalType, on_delete=models.CASCADE)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "%s " % (self.local)
+
+
+class MealType(models.Model):
+    local = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "%s " % (self.local)
+
+
 
 class Restaurant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='restaurant')
     name = models.CharField(max_length=500)
     phone = models.CharField(max_length=500)
     address = models.CharField(max_length=500)
-    logo = models.ImageField(upload_to='restaurant_logo', blank=False)
+    district = models.ForeignKey(District, on_delete=models.CASCADE,default=3)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE,default=11)
+    logo = models.ImageField(upload_to=restuarant_upload_path, blank=False)
 
     def __str__(self):
         return self.name
@@ -41,7 +119,7 @@ class Meal(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
     short_description = models.CharField(max_length=500)
-    image = models.ImageField(upload_to='meal_images/', blank=False)
+    image = models.ImageField(upload_to=meals_upload_path, blank=False)
     price = models.IntegerField(default=0)
 
     def __str__(self):

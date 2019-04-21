@@ -1,8 +1,11 @@
 import os
-import environ
-root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
-env = environ.Env(DEBUG=(bool, False),) # set default values and casting
-environ.Env.read_env()
+# settings.py
+from dotenv import load_dotenv
+load_dotenv()
+
+from pathlib import Path  # python3 only
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
 
 DBUSER = os.environ['YBDBUSER']
 DBPASSWORD = os.environ['YBDB_PASSWORD']

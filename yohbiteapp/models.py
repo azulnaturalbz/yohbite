@@ -89,6 +89,9 @@ class Restaurant(models.Model):
     district = models.ForeignKey(District, on_delete=models.CASCADE,default=3)
     location = models.ForeignKey(Location, on_delete=models.CASCADE,default=11)
     logo = models.ImageField(upload_to=restuarant_upload_path, blank=False)
+    is_active = models.BooleanField(default=True)
+    restaurant_index = models.PositiveIntegerField(default=99)
+
 
     def __str__(self):
         return self.name

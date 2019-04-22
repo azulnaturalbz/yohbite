@@ -28,7 +28,6 @@ class RestaurantForm(forms.ModelForm):
         fields = ('name','phone','address','district','location','logo')
 
 
-
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
@@ -38,7 +37,7 @@ class RestaurantForm(forms.ModelForm):
         if 'district' in self.data:
             try:
                 district_id = int(self.data.get('district'))
-                self.fields['location'].queryset = Location.objects.filter(local__district__id=district_id).order_by('local')
+                self.fields['location'].queryset = Location.objects.filter(local__district_id=district_id).order_by('local')
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
         elif self.instance.pk:

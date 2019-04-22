@@ -13,78 +13,9 @@
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% bootstrap_form user_form %}
-                    {#                    {% bootstrap_form restaurant_form %}#}
-
-                    <div class="form-group">
-                        <label for="id_name">Restaurant Name: </label>
-                        <input type="text" name="name" value="{{ restaurant.name }}" maxlength="500"
-                               class="form-control" placeholder="Name"
-                               title="" required="" id="id_name">
+                    {% bootstrap_form restaurant_form %}
+                    <div class="form-group" id="localForm" data-locations-url="{% url 'ajax_load_locations'  %}">
                     </div>
-
-                    <div class="form-group">
-                        <label for="id_phone">Restaurant Phone: </label>
-                        <input type="text" name="phone" value="{{ restaurant.phone }}" maxlength="500"
-                               class="form-control"
-                               placeholder="Phone" title="" required="" id="id_phone">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_address">Restaurant Address: </label>
-                        <input type="text" name="address" value="{{ restaurant.address }}" maxlength="500"
-                               class="form-control"
-                               placeholder="Address" title="" required="" id="id_address">
-                    </div>
-                    <div class="form-group" id="districtForm"
-                         data-district-url="{% url 'ajax_load_district' restaurant.district_id %}">
-                        <label for="id_district">District: </label>
-                        {% if restaurant.district_id %}
-                            <select name="district" class="form-control" id="id_district"
-                                    value="{{ restaurant.district_id }}" required>
-                                <option value="">---------</option>
-                                {% for district in districts %}
-                                    <option value="{{ district.pk }}"
-                                            {% if district.pk == restaurant.district_id %}selected{% endif %}>{{ district.district }}</option>
-                                {% endfor %}
-                            </select>
-                        {% else %}
-                            <select name="district" class="form-control" id="id_district"
-                                    value="{{ restaurant.district_id }}" required>
-                            </select>
-                        {% endif %}
-                    </div>
-                    <div class="form-group" id="gigForm" data-locations-url="{% url 'ajax_load_locations' restaurant.district_id restaurant.location_id %}">
-                        <label for="id_location">Location: </label>
-                        {% if restaurant.location_id %}
-                            <select name="location" class="form-control" id="id_location"
-                                    value="{{ restaurant.location_id }}" required>
-                                <option value="">---------</option>
-                                {% for location in locations %}
-                                    <option value="{{ location.pk }}"
-                                            {% if location.pk == restaurant.location_id %}selected{% endif %}>{{ location.local }}</option>
-                                {% endfor %}
-                            </select>
-                        {% else %}
-                            <select name="location" class="form-control" id="id_location"
-                                    value="{{ restaurant.location_id }}" required>
-                            </select>
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label for="id_logo">Restaurant Logo or Image</label>
-                        <div class="row bootstrap4-multi-input">
-                            <div class="col-12">Currently: <a href="{{ restaurant.logo }}">{{ restaurant.logo }}</a>
-                                <br>Change:
-                                <input type="file" name="logo" accept="image/*" class="" title="" id="id_logo">
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group" id="localForm" data-locations-url="{% url 'ajax_load_locations' %}">
-                    </div>
-
-
                     <button class="btn btn-pink" type="submit">Update</button>
                 </form>
             </div>
@@ -95,21 +26,6 @@
 {% endblock %}
 {% block scripts %}
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script>
-    (function () {
-            var url = $("#districtForm").attr("data-district-url");
-
-            $.ajax({                       // initialize an AJAX request
-                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-                data: {
-                    // add the country id to the GET parameters
-                },
-                success: function (data) {   // `data` is the return of the `load_cities` view function
-                    $("#id_district").html(data);  // replace the contents of the city input with the data that came from the server
-                }
-            });
-        })();
-    </script>
     <script>
 
         $("#id_district").change(function () {

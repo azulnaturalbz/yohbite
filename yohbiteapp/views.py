@@ -43,9 +43,7 @@ def restaurant_home(request):
 def restaurant_account(request):
     user_form = UserFormEdit(instance=request.user)
     restaurant_form = RestaurantForm(instance=request.user.restaurant)
-    restaurant = Restaurant.objects.get(id=request.user.restaurant.id)
-    districts = District.objects.all()
-    locations = Location.objects.filter(local__district_id=restaurant.district_id)
+
 
     if request.method == "POST":
         user_form = UserFormEdit(request.POST, instance=request.user.restaurant)
@@ -58,9 +56,6 @@ def restaurant_account(request):
     return render(request, 'restaurant/account.html', {
         "user_form": user_form,
         "restaurant_form": restaurant_form,
-        "restaurant":restaurant,
-        "districts":districts,
-        "locations":locations
     })
 
 

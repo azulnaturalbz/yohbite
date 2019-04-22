@@ -5,57 +5,57 @@
 {% block page %}
     <div class="row">
         <div class="col-lg-8">
-    {#            Revenue for the week#}
-                <div class="panel">
-                    <div class="panel-heading bg-blue">
-                        <h4 class="panel-title text-center text-white">
-                            Revenue by Week
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <canvas id="revenueChart"  height="110"></canvas>
-                    </div>
+            {#            Revenue for the week#}
+            <div class="panel">
+                <div class="panel-heading bg-blue">
+                    <h4 class="panel-title text-center text-white">
+                        Revenue by Week
+                    </h4>
                 </div>
-    {#            Orders for the Week#}
-                <div class="panel">
-                    <div class="panel-heading bg-blue">
-                        <h4 class="panel-title text-center text-white">
-                            Order by Week
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <canvas id="orderChart"  height="110"></canvas>
-                    </div>
+                <div class="panel-body">
+                    <canvas id="revenueChart" height="110"></canvas>
                 </div>
+            </div>
+            {#            Orders for the Week#}
+            <div class="panel">
+                <div class="panel-heading bg-blue">
+                    <h4 class="panel-title text-center text-white">
+                        Order by Week
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <canvas id="orderChart" height="110"></canvas>
+                </div>
+            </div>
         </div>
         <div class="col-lg-4">
-{#            top three meals#}
-                <div class="panel">
-                    <div class="panel-heading bg-blue">
-                        <h4 class="panel-title text-center text-white">
-                            Top 3 Meals
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <canvas id="mealChart"  height="242"></canvas>
-                    </div>
-                </div>
-{#            top 3 drivers #}
+            {#            top three meals#}
             <div class="panel">
-                    <div class="panel-heading bg-blue">
-                        <h4 class="panel-title text-center text-white">
-                            Top 3 Drivers
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <canvas id="driverChart"  height="242"></canvas>
-                    </div>
+                <div class="panel-heading bg-blue">
+                    <h4 class="panel-title text-center text-white">
+                        Top 3 Meals
+                    </h4>
                 </div>
+                <div class="panel-body">
+                    <canvas id="mealChart" height="242"></canvas>
+                </div>
+            </div>
+            {#            top 3 drivers #}
+            <div class="panel">
+                <div class="panel-heading bg-blue">
+                    <h4 class="panel-title text-center text-white">
+                        Top 3 Drivers
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <canvas id="driverChart" height="242"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block scripts %}
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script>
         var ctx = document.getElementById("revenueChart").getContext("2d");
         var data = {
@@ -95,16 +95,16 @@
     <script>
         var ctx = document.getElementById("mealChart").getContext("2d");
         var data = {
-{#            labels: ["Meal A", "Meal B", "Meal C"],#}
+            {#            labels: ["Meal A", "Meal B", "Meal C"],#}
             labels: {{ meal.labels|safe }},
             datasets: [
                 {
 
                     backgroundColor: [
-                        "#36A2EB","#FFCE56","#FF6384"
+                        "#36A2EB", "#FFCE56", "#FF6384"
                     ],
 
-{#                    data: [23,65,12]#}
+                    {#                    data: [23,65,12]#}
                     data: {{ meal.data }}
                 }
             ]
@@ -117,16 +117,16 @@
     <script>
         var ctx = document.getElementById("driverChart").getContext("2d");
         var data = {
-{#            labels: ["Meal A", "Meal B", "Meal C"],#}
+            {#            labels: ["Meal A", "Meal B", "Meal C"],#}
             labels: {{ driver.labels|safe }},
             datasets: [
                 {
 
                     backgroundColor: [
-                        "#36A2EB","#FFCE56","#FF6384"
+                        "#36A2EB", "#FFCE56", "#FF6384"
                     ],
 
-{#                    data: [23,65,12]#}
+                    {#                    data: [23,65,12]#}
                     data: {{ driver.data }}
                 }
             ]
@@ -136,4 +136,4 @@
             data: data
         });
     </script>
-{% endblock%}
+{% endblock %}

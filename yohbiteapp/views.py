@@ -21,12 +21,12 @@ def load_district(request, did=None):
 def load_locations(request, did=None, lid=None):
     if did is None and lid is None:
         district_id = request.GET.get('district')
-        locations = Location.objects.filter(local__district__id=district_id).order_by('local')
+        locations = Location.objects.filter(local__local_district__id=district_id).order_by('local')
         return render(request, 'restaurant/location_dropdown_list_options.html', {'locations': locations})
 
     else:
         district_id = request.GET.get('district')
-        locations = Location.objects.filter(local__district__id=district_id).order_by('local')
+        locations = Location.objects.filter(local__local_district__id=district_id).order_by('local')
         return render(request, 'restaurant/location_dropdown_list_options.html', {'locations': locations})
 
 def home(request):

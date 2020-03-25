@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = credentials.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = [credentials.ALLOWED_HOST,credentials.ALLOWED_HOST1,credentials.ALLOWED_HOST2,credentials.ALLOWED_HOST3]
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'yohbiteapp.apps.YohbiteappConfig',
+    'rest_framework',
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
@@ -91,7 +92,7 @@ DATABASES = {
         'PASSWORD': credentials.DBPASSWORD,
         'HOST': credentials.DBHOME,
         'PORT': credentials.DBPORT,
-        'OPTIONS': {'sslmode': 'require'},
+ #       'OPTIONS': {'sslmode': 'require'},
     }
 }
 
@@ -194,3 +195,7 @@ SOCIAL_AUTH_PIPELINE = (
 STRIPE_API_KEY = credentials.STRIPE_API_KEY
 
 LOGOUT_REDIRECT_URL = '/'
+
+
+
+

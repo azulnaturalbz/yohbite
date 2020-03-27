@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = credentials.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = credentials.DEBUG
 
 
 ALLOWED_HOSTS = [credentials.ALLOWED_HOST,credentials.ALLOWED_HOST1,credentials.ALLOWED_HOST2,credentials.ALLOWED_HOST3]
@@ -92,7 +92,7 @@ DATABASES = {
         'PASSWORD': credentials.DBPASSWORD,
         'HOST': credentials.DBHOME,
         'PORT': credentials.DBPORT,
- #       'OPTIONS': {'sslmode': 'require'},
+        'OPTIONS': {'sslmode': credentials.SSL},
     }
 }
 
@@ -175,7 +175,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = credentials.SOCIAL_AUTH_FACEBOOK_SECRET
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email'
+    'fields': 'id, name, email, first_name, last_name, gender, birthday'
 }
 
 SOCIAL_AUTH_PIPELINE = (

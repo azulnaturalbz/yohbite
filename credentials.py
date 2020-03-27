@@ -1,6 +1,7 @@
 import os
 # settings.py
-
+DEBUG = os.environ['YBDEBUG']
+SSL = os.environ['YBSSL']
 DBUSER = os.environ['YBDBUSER']
 DBPASSWORD = os.environ['YBDB_PASSWORD']
 DBNAME = os.environ['YBDB_NAME']

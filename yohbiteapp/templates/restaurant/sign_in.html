@@ -1,7 +1,7 @@
 {% extends 'base_signup.html' %}
 {% load bootstrap4 %}
 {% block title %} Sign In {% endblock %}
-{% block heading %} Restaurant - Sign In {% endblock %}
+{% block heading %} Shop - Sign In {% endblock %}
 
 {% block content %}
     <form action="" method="post">
@@ -9,5 +9,5 @@
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-pink pull-right">Sign In</button>
     </form>
-    <a href="{% url 'restaurant-sign-up' %}">Become a Restaurant</a>
+    <a href="{% url 'restaurant-sign-up' %}">Become a Shop</a>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Restaurant {% block subtitle %}|{% endblock %} {% endblock %}
+{% block title %} Shop {% block subtitle %}|{% endblock %} {% endblock %}
 
 {% block scripts %}
     <script>
@@ -44,10 +44,10 @@
 
 
         <a href="{% url 'restaurant-order' %}"
-           class="list-group-item {% if request.path == restaurant_order_url %} active {% endif %} ">Order <span
+           class="list-group-item {% if request.path == restaurant_order_url %} active {% endif %} ">Orders <span
                 class="badge"></span></a>
         <a href="{% url 'restaurant-meal' %}"
-           class="list-group-item {% if request.path == restaurant_meal_url %} active {% endif %} ">Meal</a>
+           class="list-group-item {% if request.path == restaurant_meal_url %} active {% endif %} ">Items</a>
         <a href="{% url 'restaurant-report' %}"
            class="list-group-item {% if request.path == restaurant_report_url %} active {% endif %} ">Report</a>
 

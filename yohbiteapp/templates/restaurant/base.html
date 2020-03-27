@@ -7,7 +7,7 @@
             var now = new Date();
             setInterval(function () {
                 $.ajax({
-                    url: '/api/restaurant/order/notification/' + now.toISOString() + '/',
+                    url: '/api/shop/order/notification/' + now.toISOString() + '/',
                     method: 'GET',
                     success: function (data) {
                         if (data['notification'] === 0) {

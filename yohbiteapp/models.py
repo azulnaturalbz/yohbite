@@ -33,7 +33,7 @@ def restuarant_upload_path(instance, filename):
         # set filename as random string
         filename = '{}.{}'.format(uuid4().hex, ext)
 
-    return '/'.join(['restuarants', str(instance.id),'restuarant_logos', filename])
+    return '/'.join(['shops', str(instance.id),'shop_logos', filename])
 
 
 def meals_upload_path(instance, filename):
@@ -45,7 +45,7 @@ def meals_upload_path(instance, filename):
         # set filename as random string
         filename = '{}.{}'.format(uuid4().hex, ext)
 
-    return '/'.join(['restuarants', str(instance.restaurant.id),'restuarant_meals', filename])
+    return '/'.join(['shops', str(instance.restaurant.id),'shop_items', filename])
 
 #
 # class Country(models.Model):

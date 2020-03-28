@@ -258,6 +258,9 @@ class Driver(models.Model):
 
 
 class Meal(models.Model):
+    #TODO ADD QUANTITY FOR STOCK AND MINUS QUANTITY WITH ORDER
+    #TODO ADD CATEGORY FOR ITEMS
+    #TODO CHANGE INTEGER FIELD FOR MEAL TO POSITIVE DECIMAL
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
     short_description = models.CharField(max_length=500)
@@ -269,16 +272,19 @@ class Meal(models.Model):
 
 
 class Order(models.Model):
-    COOKING = 1
-    READY = 2
-    ONTHEWAY = 3
-    DELIVERED = 4
+    #TODO ADD PHONE NUMBER
+    REQUESTED = 1
+    CONFIRMED = 2
+    READY = 3
+    COMPLETED = 4
+    CANCELLED = 5
 
     STATUS_CHOICES = (
-        (COOKING, "Cooking"),
+        (REQUESTED, "Requested"),
+        (CONFIRMED, "Confirmed"),
         (READY, "Ready"),
-        (ONTHEWAY, "On the way"),
-        (DELIVERED, "Delivered"),
+        (COMPLETED, "Completed"),
+        (CANCELLED, "Cancelled")
 
     )
 

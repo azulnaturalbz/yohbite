@@ -67,7 +67,7 @@ def customer_add_order(request):
         #stripe_token = request.POST["stripe_token"]
 
         # Check whether customer has any order this is not delivered
-        if Order.objects.filter(customer=customer).exclude(status=Order.DELIVERED):
+        if Order.objects.filter(customer=customer).exclude(status=Order.COMPLETED).exclude(status=Order.CANCELLED):
             return JsonResponse({"status": "failed", "error": "Your last order must be completed"})
 
         # Check Address
@@ -95,7 +95,7 @@ def customer_add_order(request):
                 customer=customer,
                 restaurant_id=request.POST["restaurant_id"],
                 total=order_total,
-                status=Order.COOKING,
+                status=Order.REQUESTED,
                 address=request.POST["address"]
             )
             # Step Two create an order detail
@@ -163,7 +163,7 @@ def customer_driver_location(request):
     access_token = AccessToken.objects.get(token=request.GET.get('access_token'), expires__gt=timezone.now())
     customer = access_token.user.customer
 
-    current_order = Order.objects.filter(customer=customer, status=Order.ONTHEWAY).last()
+    current_order = Order.objects.filter(customer=customer, status=Order.READY).last()
     location = current_order.driver.location
 
     return JsonResponse({"location": location})
@@ -185,8 +185,9 @@ def restaurant_order_notification(request, last_request_time):
 
 
 def driver_get_ready_orders(request):
+    #TODO DO ONE TO INFO CUSTOMER ABOUT READY FOR PICKUP
     orders = OrderSerializer(
-        Order.objects.filter(status=Order.READY, driver=None).order_by("-id"),
+        Order.objects.filter(status=Order.CONFIRMED, driver=None).order_by("-id"),
         many=True
     ).data
     return JsonResponse({"orders": orders})
@@ -204,16 +205,16 @@ def driver_pick_order(request):
         driver = access_token.user.driver
 
         # Check if driver can only pick-up one order at the same time
-        if Order.objects.filter(driver=driver).exclude(status=Order.ONTHEWAY):
+        if Order.objects.filter(driver=driver).exclude(status=Order.READY):
             return JsonResponse({"status": "failed", "error": "You can only pick up one order at the same time"})
         try:
             order = Order.objects.get(
                 id=request.POST["order_id"],
                 driver=None,
-                status=Order.READY
+                status=Order.CONFIRMED
             )
             order.driver = driver
-            order.status = Order.ONTHEWAY
+            order.status = Order.READY
             order.picked_at = timezone.now()
             order.save()
 
@@ -246,7 +247,7 @@ def driver_complete_order(request):
     access_token = AccessToken.objects.get(token=request.POST.get('access_token'), expires__gt=timezone.now())
     driver = access_token.user.driver
     order = Order.objects.get(id=request.POST["order_id"], driver=driver)
-    order.status = Order.DELIVERED
+    order.status = Order.COMPLETED
     order.save()
     return JsonResponse({"status": "success"})
 
@@ -265,7 +266,7 @@ def driver_get_revenue(request):
     for day in current_weekdays:
         orders = Order.objects.filter(
             driver=driver,
-            status=Order.DELIVERED,
+            status=Order.COMPLETED,
             create_at__year=day.year,
             create_at__month=day.month,
             create_at__day=day.day,

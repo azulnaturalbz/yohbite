@@ -33,13 +33,13 @@ def home(request):
     return redirect(restaurant_home)
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
 def restaurant_home(request):
     # return render(request, 'restaurant/home.html',{})
     return redirect(restaurant_order)
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
 def restaurant_account(request):
     user_form = UserFormEdit(instance=request.user)
     restaurant_form = RestaurantForm(instance=request.user.restaurant)
@@ -66,7 +66,7 @@ def restaurant_meal(request):
     return render(request, 'restaurant/meal.html', {"meals": meals})
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
 def restaurant_add_meal(request):
     form = MealForm()
 
@@ -84,7 +84,7 @@ def restaurant_add_meal(request):
     })
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
 def restaurant_edit_meal(request, meal_id):
     form = MealForm(instance=Meal.objects.get(id=meal_id))
 
@@ -100,14 +100,15 @@ def restaurant_edit_meal(request, meal_id):
     })
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
 def restaurant_meal(request):
+    #TODO PAGINATE THESE RECORDS
     meals = Meal.objects.filter(restaurant=request.user.restaurant).order_by("-id")
 
     return render(request, 'restaurant/meal.html', {"meals": meals})
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
 def restaurant_add_meal(request):
     form = MealForm()
 
@@ -125,18 +126,35 @@ def restaurant_add_meal(request):
     })
 
 
-@login_required(login_url='/restaurant/sign-in/')
+@login_required(login_url='/shop/sign-in/')
+#TODO PAGINATE THESE RECORDS TO
 def restaurant_order(request):
     if request.method == "POST":
         order = Order.objects.get(id=request.POST["id"], restaurant=request.user.restaurant)
-        if order.status == Order.COOKING:
+        if order.status == Order.REQUESTED:
+            order.status = Order.CONFIRMED
+            order.save()
+        elif order.status == Order.CONFIRMED:
             order.status = Order.READY
+            order.save()
+        elif order.status == Order.READY:
+            order.status = Order.COMPLETED
             order.save()
     orders = Order.objects.filter(restaurant=request.user.restaurant).order_by("-id")
     return render(request, 'restaurant/order.html', {"orders": orders})
 
+@login_required(login_url='/shop/sign-in/')
+def restaurant_order_cancel(request,order_id):
+    id = order_id
+    order = Order.objects.get(id=id, restaurant=request.user.restaurant)
+    if order.status != Order.CANCELLED:
+        order.status = Order.CANCELLED
+        order.save()
+    orders = Order.objects.filter(restaurant=request.user.restaurant).order_by("-id")
+    return render(request, 'restaurant/order.html', {"orders": orders})
 
-@login_required(login_url='/restaurant/sign-in/')
+
+@login_required(login_url='/shop/sign-in/')
 def restaurant_report(request):
     # Calculate Revenue and number of orders by current week
     from datetime import datetime, timedelta
@@ -150,7 +168,7 @@ def restaurant_report(request):
     for day in current_weekdays:
         delivered_orders = Order.objects.filter(
             restaurant=request.user.restaurant,
-            status=Order.DELIVERED,
+            status=Order.COMPLETED,
             create_at__year=day.year,
             create_at__month=day.month,
             create_at__day=day.day,

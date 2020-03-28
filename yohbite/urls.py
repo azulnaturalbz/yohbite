@@ -39,6 +39,7 @@ urlpatterns = [
                   url(r'^shop/item/edit/(?P<meal_id>\d+)/$', views.restaurant_edit_meal,
                       name='restaurant-edit-meal'),
                   url(r'^shop/order/$', views.restaurant_order, name='restaurant-order'),
+                  url(r'^shop/order/cancel/(?P<order_id>\d+)$', views.restaurant_order_cancel, name='restaurant-order-cancel'),
                   url(r'^shop/report/$', views.restaurant_report, name='restaurant-report'),
 
                   # sign in and sign up and sign out
@@ -50,7 +51,7 @@ urlpatterns = [
 
                   # api for customers
                   url(r'^api/customer/shop/$', api.customer_get_restaurants),
-                  url(r'^api/customer/item/(?P<restaurant_id>\d+)/$', api.customer_get_meals),
+                  url(r'^api/customer/items/(?P<restaurant_id>\d+)/$', api.customer_get_meals),
                   url(r'^api/customer/order/add/$', api.customer_add_order),
                   url(r'^api/customer/order/lastest/$', api.customer_get_lastest_order),
                   url(r'^api/customer/driver/location/$',api.customer_driver_location),

@@ -47,44 +47,7 @@ def meals_upload_path(instance, filename):
 
     return '/'.join(['shops', str(instance.restaurant.id),'shop_items', filename])
 
-#
-# class Country(models.Model):
-#     country = models.CharField(max_length=20)
-#
-#     def __str__(self):
-#         return "%s " % (self.country)
-#
-#
-# class District(models.Model):
-#     district = models.CharField(max_length=100)
-#     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-#     description = models.TextField(default='No Description')
-#
-#     def __str__(self):
-#         return "%s " % (self.district)
-# class Local(models.Model):
-#     local = models.CharField(max_length=100)
-#     district = models.ForeignKey(District, on_delete=models.CASCADE)
-#     description = models.TextField(default='No Description')
-#
-#     def __str__(self):
-#         return "%s " % (self.local)
-#
-# class LocalType(models.Model):
-#     local = models.CharField(max_length=100)
-#     description = models.TextField(blank=True, null=True)
-#
-#     def __str__(self):
-#         return "%s " % (self.local)
-#
-#
-# class Location(models.Model):
-#     local = models.ForeignKey(Local, on_delete=models.CASCADE)
-#     localType = models.ForeignKey(LocalType, on_delete=models.CASCADE)
-#     description = models.TextField(blank=True, null=True)
-#
-#     def __str__(self):
-#         return "%s " % (self.local)
+
 class Country(models.Model):
     # Fields
     country_name = models.CharField(max_length=255)
@@ -265,7 +228,11 @@ class Meal(models.Model):
     name = models.CharField(max_length=500)
     short_description = models.CharField(max_length=500)
     image = models.ImageField(upload_to=meals_upload_path, blank=False)
-    price = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    # is_sale = models.BooleanField(default=false)
+    # sale_discount = models.PositiveIntegerField(default=0)
+    # is_available = models.BooleanField(default=false)
+    # stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
